@@ -49,7 +49,7 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className={`text-xl font-bold hover:opacity-80 transition-all ${logoClass}`}
           >
-            Shawon
+            Shovon
           </button>
 
           {/* Desktop links */}
