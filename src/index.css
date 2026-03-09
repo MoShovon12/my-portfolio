@@ -1,7 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
 @import "tailwindcss";
 
 /* Enable class-based dark mode for Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens ──────────────────────────────────────────────────────────── */
+/* Light mode (default) */
+:root {
+  /* Accent palette (same in both modes) */
+  --color-teal:   #00f5d4;
+  --color-blue:   #4cc9f0;
+  --color-purple: #c77dff;
+  --color-pink:   #f72585;
+  --color-indigo: #6366f1;
+  --color-green:  #06d6a0;
+  --color-orange: #f4a261;
+  --color-yellow: #ffd60a;
+
+  /* Fonts */
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Fira Mono', monospace;
+
+  /* Surfaces */
+  --bg:           #f0f4f8;
+  --bg-deep:      #e8edf4;
+  --bg-hero:      #f0f4ff;
+  --bg-card:      rgba(0,0,0,0.03);
+  --bg-card-hov:  rgba(0,0,0,0.055);
+  --bg-card-deep: rgba(240,244,248,0.97);
+
+  /* Text */
+  --tx:   #0d1117;
+  --tx-2: rgba(13,17,23,0.62);
+  --tx-3: rgba(13,17,23,0.42);
+  --tx-4: rgba(13,17,23,0.26);
+  --tx-5: rgba(13,17,23,0.14);
+
+  /* Borders */
+  --bd:   rgba(0,0,0,0.07);
+  --bd-2: rgba(0,0,0,0.14);
+
+  /* Subtle grid overlay */
+  --grid: rgba(0,0,0,0.035);
+
+  /* Heading gradient start color */
+  --h-from: #0d1117;
+
+  /* Navbar scrolled background */
+  --nav-bg: rgba(240,244,248,0.92);
+}
+
+/* Dark mode overrides */
+.dark {
+  --bg:           #060912;
+  --bg-deep:      #040710;
+  --bg-hero:      #07071a;
+  --bg-card:      rgba(255,255,255,0.02);
+  --bg-card-hov:  rgba(255,255,255,0.042);
+  --bg-card-deep: rgba(6,9,18,0.97);
+
+  --tx:   #ffffff;
+  --tx-2: rgba(255,255,255,0.60);
+  --tx-3: rgba(255,255,255,0.38);
+  --tx-4: rgba(255,255,255,0.22);
+  --tx-5: rgba(255,255,255,0.12);
+
+  --bd:   rgba(255,255,255,0.07);
+  --bd-2: rgba(255,255,255,0.13);
+
+  --grid: rgba(255,255,255,0.012);
+
+  --h-from: #ffffff;
+
+  /* Navbar scrolled background */
+  --nav-bg: rgba(4,7,16,0.92);
+}
 
 /* Base styles */
 @layer base {
@@ -10,12 +83,24 @@
   }
 
   body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--tx);
+    font-family: var(--font-body);
     margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   * {
     box-sizing: border-box;
+  }
+
+  /* Form field text + placeholder */
+  input, textarea {
+    color: var(--tx);
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--tx-4);
   }
 }
