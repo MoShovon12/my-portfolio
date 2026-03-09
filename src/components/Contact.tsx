@@ -330,7 +330,7 @@ export default function Contact() {
         <div style={{ position: 'absolute', top: '-10%', left: '-8%', width: '500px', height: '500px', borderRadius: '50%', background: `radial-gradient(circle, ${COLOR}07, transparent 70%)`, pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '-15%', right: '-8%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, #4cc9f005, transparent 70%)', pointerEvents: 'none' }} />
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
+        <div className="section-pad" style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
 
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '60px', animation: 'ctFadeUp 0.6s ease both' }}>
@@ -361,7 +361,7 @@ export default function Contact() {
           </div>
 
           {/* Two-column layout */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '32px', alignItems: 'start' }}>
+          <div className="contact-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '32px', alignItems: 'start' }}>
 
             {/* LEFT: Contact info */}
             <div ref={infoRef} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -464,7 +464,7 @@ export default function Contact() {
                     </p>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div className="contact-name-email" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                     <Field label="Name *" name="name" placeholder="Muhammad Ali" value={form.name} onChange={update('name')} />
                     <Field label="Email *" type="email" name="email" placeholder="you@example.com" value={form.email} onChange={update('email')} />
                   </div>

@@ -104,3 +104,67 @@
     color: var(--tx-4);
   }
 }
+
+/* ── Mobile responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Section padding */
+  .section-pad { padding: 60px 16px !important; }
+
+  /* Skills: convert 7-col grid to horizontal scroll */
+  .skills-cat-tabs {
+    display: flex !important;
+    grid-template-columns: unset !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    gap: 8px !important;
+    scrollbar-width: none;
+  }
+  .skills-cat-tabs::-webkit-scrollbar { display: none; }
+  .skills-cat-tabs > * {
+    flex-shrink: 0;
+    width: 76px;
+    scroll-snap-align: start;
+  }
+
+  /* Skills: panel header wraps on mobile */
+  .skills-panel-header {
+    flex-wrap: wrap !important;
+    padding: 18px 16px 14px !important;
+  }
+  .skills-avg-box {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 16px !important;
+  }
+  .skills-avg-box > :first-child { font-size: 1.6rem !important; }
+
+  /* Skills: stats (3-col → 1-col) */
+  .skills-stats-grid { grid-template-columns: 1fr !important; }
+
+  /* Skills: skills grid padding + collapse to 1-col */
+  .skills-panel-body { padding: 18px 14px 20px !important; grid-template-columns: 1fr !important; }
+
+  /* Contact: stack form below info */
+  .contact-grid { grid-template-columns: 1fr !important; }
+
+  /* Contact: collapse name/email 2-col to 1-col */
+  .contact-name-email { grid-template-columns: 1fr !important; }
+
+  /* Certifications: pub card header wraps */
+  .pub-card-header { flex-wrap: wrap !important; }
+  .pub-status-pill { order: -1; margin-bottom: 10px; width: 100% !important; justify-content: flex-start !important; }
+
+  /* Certifications: 2-col grid → 1-col */
+  .certs-grid { grid-template-columns: 1fr !important; }
+
+  /* About inner */
+  .about-inner { padding: 60px 16px !important; }
+
+  /* Experience card header: allow wrap */
+  .exp-card-header { flex-wrap: wrap !important; gap: 10px !important; }
+}

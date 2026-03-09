@@ -362,7 +362,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.7 }}
-            className="text-5xl sm:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4 leading-tight"
+            className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4 leading-tight"
           >
             {hero.name}
           </motion.h1>

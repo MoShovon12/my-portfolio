@@ -375,7 +375,7 @@ export default function Skills() {
           pointerEvents: 'none', transition: 'background 1.2s',
         }} />
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
+        <div className="section-pad" style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
 
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: '52px', animation: 'skillFadeUp 0.6s ease both' }}>
@@ -407,7 +407,7 @@ export default function Skills() {
           </div>
 
           {/* Stats */}
-          <div style={{
+          <div className="skills-stats-grid" style={{
             display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px',
             marginBottom: '40px', animation: 'skillFadeUp 0.6s ease 0.1s both',
           }}>
@@ -444,7 +444,7 @@ export default function Skills() {
           </div>
 
           {/* Category tabs */}
-          <div style={{
+          <div className="skills-cat-tabs" style={{
             display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '10px',
             marginBottom: '28px', animation: 'skillFadeUp 0.6s ease 0.15s both',
           }}>
@@ -469,7 +469,7 @@ export default function Skills() {
             }} />
 
             {/* Panel header */}
-            <div style={{
+            <div className="skills-panel-header" style={{
               padding: '26px 32px 22px',
               borderBottom: `1px solid ${ag.color}15`,
               display: 'flex', alignItems: 'center', gap: '18px',
@@ -493,7 +493,7 @@ export default function Skills() {
                   {ag.desc}
                 </p>
               </div>
-              <div style={{
+              <div className="skills-avg-box" style={{
                 textAlign: 'center', padding: '14px 22px', borderRadius: '14px',
                 border: `1px solid ${ag.color}35`, background: `${ag.color}10`, flexShrink: 0,
               }}>
@@ -513,7 +513,7 @@ export default function Skills() {
             </div>
 
             {/* Skills grid */}
-            <div style={{
+            <div className="skills-panel-body" style={{
               padding: '24px 24px 28px',
               display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px',
             }}>

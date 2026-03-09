@@ -133,7 +133,7 @@ function TimelineCard({ entry, index, isOpen, onToggle }: {
         }} />
 
         {/* Header — always visible */}
-        <div onClick={onToggle} style={{
+        <div onClick={onToggle} className="exp-card-header" style={{
           padding: '20px 24px', cursor: 'pointer',
           display: 'flex', alignItems: 'center', gap: '16px', userSelect: 'none',
         }}>
@@ -417,7 +417,7 @@ export default function Experience() {
         backgroundSize: '48px 48px',
       }} />
 
-      <div style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
+      <div className="section-pad" style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
 
         {/* Header */}
         <motion.div

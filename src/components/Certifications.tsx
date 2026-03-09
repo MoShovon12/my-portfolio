@@ -257,7 +257,7 @@ function PubCard({ pub, index, visible }: {
       }} />
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '16px' }}>
+      <div className="pub-card-header" style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', marginBottom: '16px' }}>
         <InteractiveIconBox color={meta.color} isHovered={hov}>
           <PubIcon color={meta.color} animate={hov} />
         </InteractiveIconBox>
@@ -280,7 +280,7 @@ function PubCard({ pub, index, visible }: {
         </div>
 
         {/* Status pill */}
-        <div style={{
+        <div className="pub-status-pill" style={{
           display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0,
           fontSize: '0.63rem', fontFamily: 'monospace',
           color: sColor, background: `${sColor}15`,
@@ -462,7 +462,7 @@ export default function Certifications() {
         borderRadius: '50%', background: 'radial-gradient(circle, #c77dff05, transparent 70%)', pointerEvents: 'none',
       }} />
 
-      <div style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
+      <div className="section-pad" style={{ position: 'relative', zIndex: 1, maxWidth: '1080px', margin: '0 auto', padding: '80px 32px' }}>
 
         {/* Certifications */}
         <div ref={certsRef}>
