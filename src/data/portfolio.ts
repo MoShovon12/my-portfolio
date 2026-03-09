@@ -10,7 +10,6 @@ const portfolio: PortfolioData = {
   nav: [
     { label: 'About',           href: '#about' },
     { label: 'Experience',      href: '#experience' },
-    { label: 'Education',       href: '#education' },
     { label: 'Skills',          href: '#skills' },
     { label: 'Certifications',  href: '#certifications' },
     { label: 'Contact',         href: '#contact' },
