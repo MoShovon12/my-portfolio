@@ -1,4 +1,48 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+
+// ─── Interactive icon box (3D tilt + squish) ──────────────────────────────────
+function InteractiveIconBox({ color, isLit, size = 46, borderWidth = '1.5px', children }: {
+  color: string; isLit: boolean; size?: number; borderWidth?: string; children: React.ReactNode;
+}) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rotX = useSpring(useTransform(my, [-26, 26], [14, -14]), { stiffness: 800, damping: 60 });
+  const rotY = useSpring(useTransform(mx, [-26, 26], [-14, 14]), { stiffness: 800, damping: 60 });
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(e.clientX - r.left - r.width / 2);
+    my.set(e.clientY - r.top - r.height / 2);
+  };
+  const handleLeave = () => { mx.set(0); my.set(0); };
+  return (
+    <motion.div
+      data-interactive-icon
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      whileHover={{ scale: 1.12 }}
+      whileTap={{ scaleX: 1.22, scaleY: 0.72, rotate: -10, transition: { type: 'spring', stiffness: 600, damping: 18 } }}
+      style={{
+        rotateX: rotX, rotateY: rotY,
+        transformPerspective: 500, transformStyle: 'preserve-3d' as const,
+        width: `${size}px`, height: `${size}px`,
+        borderRadius: size >= 50 ? '16px' : '13px', flexShrink: 0,
+        border: `${borderWidth} solid ${isLit ? color + '55' : 'var(--bd)'}`,
+        background: isLit ? `${color}18` : 'var(--bg-card)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'border-color 0.3s, background 0.3s',
+        boxShadow: isLit ? `0 0 20px ${color}30` : 'none',
+      }}
+    >
+      <motion.div
+        whileHover={{ rotate: [0, -14, 12, -6, 4, 0], transition: { duration: 0.55, ease: 'easeInOut' } }}
+        whileTap={{ rotate: 20, scale: 0.85, transition: { type: 'spring', stiffness: 500, damping: 10 } }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
 import portfolio from '../data/portfolio';
 
 // ─── Skill percentages (level → realistic %) ─────────────────────────────────
@@ -155,7 +199,7 @@ const CATS: CatConfig[] = [
 ];
 
 // ─── Progress Bar ─────────────────────────────────────────────────────────────
-function ProgressBar({ pct, color, trigger }: { pct: number; color: string; trigger: boolean }) {
+function ProgressBar({ pct, color, trigger, darkMode }: { pct: number; color: string; trigger: boolean; darkMode: boolean }) {
   const [w, setW] = useState(0);
   useEffect(() => {
     if (trigger) { const t = setTimeout(() => setW(pct), 100); return () => clearTimeout(t); }
@@ -167,7 +211,7 @@ function ProgressBar({ pct, color, trigger }: { pct: number; color: string; trig
         position: 'absolute', left: 0, top: 0, bottom: 0,
         width: `${w}%`, borderRadius: '20px',
         background: `linear-gradient(90deg,${color}80,${color}ff)`,
-        boxShadow: `0 0 12px ${color}70`,
+        boxShadow: darkMode ? `0 0 12px ${color}70` : 'none',
         transition: 'width 1s cubic-bezier(0.22,1,0.36,1)',
       }} />
       <div style={{
@@ -181,8 +225,8 @@ function ProgressBar({ pct, color, trigger }: { pct: number; color: string; trig
 }
 
 // ─── Skill Row ────────────────────────────────────────────────────────────────
-function SkillRow({ name, pct, color, delay, trigger }: {
-  name: string; pct: number; color: string; delay: number; trigger: boolean;
+function SkillRow({ name, pct, color, delay, trigger, darkMode }: {
+  name: string; pct: number; color: string; delay: number; trigger: boolean; darkMode: boolean;
 }) {
   const [hov, setHov] = useState(false);
   const lvl = pct >= 90 ? 'Expert' : pct >= 80 ? 'Advanced' : pct >= 65 ? 'Intermediate' : 'Beginner';
@@ -236,7 +280,7 @@ function SkillRow({ name, pct, color, delay, trigger }: {
           </span>
         </div>
       </div>
-      <ProgressBar pct={pct} color={color} trigger={trigger} />
+      <ProgressBar pct={pct} color={color} trigger={trigger} darkMode={darkMode} />
     </div>
   );
 }
@@ -274,16 +318,9 @@ function TabBtn({ cat, isActive, onClick }: { cat: CatConfig; isActive: boolean;
           background: cat.color, boxShadow: `0 0 12px ${cat.color}`,
         }} />
       )}
-      <div style={{
-        width: '46px', height: '46px', borderRadius: '13px',
-        border: `1.5px solid ${lit ? cat.color + '55' : 'var(--bd)'}`,
-        background: lit ? `${cat.color}18` : 'var(--bg-card)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        transition: 'all 0.3s',
-        boxShadow: isActive ? `0 0 20px ${cat.color}30` : 'none',
-      }}>
+      <InteractiveIconBox color={cat.color} isLit={lit} size={46} borderWidth="1.5px">
         <cat.Icon color={lit ? cat.color : 'var(--tx-3)'} animate={iconAnim || isActive} />
-      </div>
+      </InteractiveIconBox>
       <span style={{
         fontSize: '0.65rem', fontFamily: 'monospace',
         color: isActive ? cat.color : hov ? cat.color + 'cc' : 'var(--tx-3)',
@@ -297,7 +334,7 @@ function TabBtn({ cat, isActive, onClick }: { cat: CatConfig; isActive: boolean;
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
-export default function Skills() {
+export default function Skills({ darkMode = true }: { darkMode?: boolean }) {
   const { skills } = portfolio;
   const [active, setActive] = useState<CatId>('lang');
   const [animKey, setAnimKey] = useState(0);
@@ -429,7 +466,7 @@ export default function Skills() {
                 }} />
                 <div style={{
                   fontSize: '2.4rem', fontWeight: 900, color: ag.color,
-                  lineHeight: 1, transition: 'color 0.5s', textShadow: `0 0 30px ${ag.color}40`,
+                  lineHeight: 1, transition: 'color 0.5s', textShadow: darkMode ? `0 0 30px ${ag.color}40` : 'none',
                 }}>
                   {s.value}{s.suffix}
                 </div>
@@ -458,7 +495,7 @@ export default function Skills() {
             borderRadius: '22px',
             border: `1.5px solid ${ag.color}45`,
             background: `linear-gradient(160deg, ${ag.color}10 0%, var(--bg-card-deep) 60%)`,
-            boxShadow: `0 0 100px ${ag.color}15, inset 0 1px 0 ${ag.color}25`,
+            boxShadow: darkMode ? `0 0 100px ${ag.color}15, inset 0 1px 0 ${ag.color}25` : `inset 0 1px 0 ${ag.color}20`,
             overflow: 'hidden', position: 'relative',
             animation: 'skillPanelIn 0.4s cubic-bezier(0.4,0,0.2,1) both',
           }}>
@@ -475,16 +512,9 @@ export default function Skills() {
               display: 'flex', alignItems: 'center', gap: '18px',
               background: `${ag.color}05`,
             }}>
-              <div style={{
-                width: '58px', height: '58px', borderRadius: '16px',
-                border: `2px solid ${ag.color}55`,
-                background: `linear-gradient(135deg, ${ag.color}20, ${ag.color}08)`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: `0 0 30px ${ag.color}30, inset 0 1px 0 ${ag.color}30`,
-                flexShrink: 0,
-              }}>
+              <InteractiveIconBox color={ag.color} isLit={true} size={58} borderWidth="2px">
                 <ag.Icon color={ag.color} animate={true} />
-              </div>
+              </InteractiveIconBox>
               <div style={{ flex: 1 }}>
                 <h3 style={{ fontSize: '1.4rem', fontWeight: 900, color: 'var(--tx)', marginBottom: '5px' }}>
                   {ag.label}
@@ -499,7 +529,7 @@ export default function Skills() {
               }}>
                 <div style={{
                   fontSize: '2.2rem', fontWeight: 900, color: ag.color,
-                  lineHeight: 1, textShadow: `0 0 24px ${ag.color}60`,
+                  lineHeight: 1, textShadow: darkMode ? `0 0 24px ${ag.color}60` : 'none',
                 }}>
                   {avgActive}%
                 </div>
@@ -521,7 +551,7 @@ export default function Skills() {
                 <SkillRow
                   key={`${animKey}-${skill.name}`}
                   name={skill.name} pct={skill.pct}
-                  color={ag.color} delay={i * 0.08} trigger={triggered}
+                  color={ag.color} delay={i * 0.08} trigger={triggered} darkMode={darkMode}
                 />
               ))}
             </div>

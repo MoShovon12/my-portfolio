@@ -87,8 +87,8 @@ function InteractiveIconBox({
 }: { color: string; isHovered: boolean; children: React.ReactNode }) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rotX = useSpring(useTransform(my, [-26, 26], [14, -14]), { stiffness: 380, damping: 22 });
-  const rotY = useSpring(useTransform(mx, [-26, 26], [-14, 14]), { stiffness: 380, damping: 22 });
+  const rotX = useSpring(useTransform(my, [-26, 26], [14, -14]), { stiffness: 800, damping: 60 });
+  const rotY = useSpring(useTransform(mx, [-26, 26], [-14, 14]), { stiffness: 800, damping: 60 });
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();

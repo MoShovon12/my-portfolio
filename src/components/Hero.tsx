@@ -17,12 +17,12 @@ function ProfileCard() {
   const mouseY = useMotionValue(0);
 
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [14, -14]), {
-    stiffness: 260,
-    damping: 28,
+    stiffness: 700,
+    damping: 55,
   });
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-14, 14]), {
-    stiffness: 260,
-    damping: 28,
+    stiffness: 700,
+    damping: 55,
   });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -111,20 +111,16 @@ function ProfileCard() {
           </div>
 
           {/* ── Orbiting particles ── */}
-          {[0, 1, 2, 3, 4].map((i) => {
+          {[0, 1, 2].map((i) => {
             const colors = [
               'rgba(99,102,241,0.95)',
               'rgba(168,85,247,0.95)',
               'rgba(236,72,153,0.95)',
-              'rgba(59,130,246,0.95)',
-              'rgba(16,185,129,0.95)',
             ];
             const glows = [
               'rgba(99,102,241,0.7)',
               'rgba(168,85,247,0.7)',
               'rgba(236,72,153,0.7)',
-              'rgba(59,130,246,0.7)',
-              'rgba(16,185,129,0.7)',
             ];
             return (
               <div
@@ -254,7 +250,7 @@ function ProfileCard() {
 }
 
 // ─── Main Hero section ───────────────────────────────────────────────────────
-export default function Hero() {
+export default function Hero({ darkMode = true }: { darkMode?: boolean }) {
   const { hero } = portfolio;
   const blobRef  = useRef<HTMLDivElement>(null);
   const mousePos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
@@ -309,8 +305,9 @@ export default function Hero() {
             height: BLOBS[0].size,
             left:   `${BLOBS[0].x}%`,
             top:    `${BLOBS[0].y}%`,
-            background: `radial-gradient(circle, rgba(${BLOBS[0].color}, 0.55) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, rgba(${BLOBS[0].color}, ${darkMode ? 0.55 : 0.20}) 0%, transparent 70%)`,
             filter: 'blur(60px)',
+            willChange: 'transform',
           }}
         />
         {BLOBS.slice(1).map((b, i) => (
@@ -322,10 +319,11 @@ export default function Hero() {
               height: b.size,
               left:   `${b.x}%`,
               top:    `${b.y}%`,
-              background: `radial-gradient(circle, rgba(${b.color}, 0.45) 0%, transparent 70%)`,
+              background: `radial-gradient(circle, rgba(${b.color}, ${darkMode ? 0.45 : 0.16}) 0%, transparent 70%)`,
               filter: 'blur(70px)',
               animation: `blobDrift ${b.dur}ms ease-in-out infinite alternate`,
               animationDelay: `${i * -2000}ms`,
+              willChange: 'transform',
             }}
           />
         ))}

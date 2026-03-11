@@ -117,7 +117,8 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
+    padding: 4px 16px 8px !important;
+    margin: 0 -16px !important;
     gap: 8px !important;
     scrollbar-width: none;
   }
@@ -167,4 +168,14 @@
 
   /* Experience card header: allow wrap */
   .exp-card-header { flex-wrap: wrap !important; gap: 10px !important; }
+}
+
+/* ── Touch / mobile tap feedback ────────────────────────────────────────────── */
+/* Give instant visual response on tap for interactive icon boxes */
+@media (hover: none) {
+  /* Icon boxes: scale down briefly on touch */
+  [data-interactive-icon]:active {
+    transform: scale(0.88);
+    transition: transform 0.1s ease;
+  }
 }

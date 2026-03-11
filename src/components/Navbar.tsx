@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import portfolio from '../data/portfolio';
-import MOLogo from './MOLogo';
 
 interface NavbarProps {
   darkMode: boolean;
@@ -49,13 +48,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
         }}
       >
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', height: '64px' }}>
 
-            {/* Logo */}
-            <MOLogo size="md" darkMode={darkMode} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
-
-            {/* Desktop links */}
-            <div style={{ alignItems: 'center', gap: '32px' }} className="hidden md:flex">
+            {/* Desktop links — centred */}
+            <div style={{ alignItems: 'center', gap: '32px', flex: 1, justifyContent: 'center' }} className="hidden md:flex">
               {portfolio.nav.map((link) => (
                 <NavLink key={link.href} label={link.label} onClick={() => handleNavClick(link.href)} />
               ))}
@@ -64,9 +60,8 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
               <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
             </div>
 
-            {/* Mobile: toggle + hamburger */}
-            <div className="flex md:hidden" style={{ alignItems: 'center', gap: '12px' }}>
-              <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+            {/* Mobile: hamburger only — centered */}
+            <div className="flex md:hidden" style={{ alignItems: 'center', width: '100%', justifyContent: 'center' }}>
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label="Toggle menu"
@@ -100,8 +95,8 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
               animate={{ opacity: 1, y: 0 }}
               style={{
                 borderTop: '1px solid rgba(0,245,212,0.08)',
-                padding: '16px 0 20px',
-                display: 'flex', flexDirection: 'column', gap: '4px',
+                padding: '12px 0 16px',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px',
                 background: 'var(--nav-bg)',
               }}
             >
@@ -111,7 +106,8 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
                   onClick={() => handleNavClick(link.href)}
                   style={{
                     background: 'none', border: 'none', cursor: 'pointer',
-                    textAlign: 'left', padding: '10px 4px',
+                    textAlign: 'center', padding: '10px 24px',
+                    width: '100%',
                     fontSize: '0.82rem', fontFamily: 'monospace',
                     letterSpacing: '0.12em', textTransform: 'uppercase',
                     color: 'var(--tx-2)',
@@ -123,6 +119,10 @@ export default function Navbar({ darkMode, toggleDarkMode }: NavbarProps) {
                   {link.label}
                 </button>
               ))}
+              {/* Theme toggle inside dropdown */}
+              <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid var(--bd)', width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
+              </div>
             </motion.div>
           )}
         </div>

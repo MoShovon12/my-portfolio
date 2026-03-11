@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import portfolio from '../data/portfolio';
 
 // ─── Per-entry display metadata (color + duration) ───────────────────────────
@@ -72,6 +72,48 @@ function CheckIcon({ color }: { color: string }) {
   );
 }
 
+// ─── Interactive icon box ────────────────────────────────────────────────────
+function InteractiveIconBox({ color, isOpen, children }: { color: string; isOpen: boolean; children: React.ReactNode }) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rotX = useSpring(useTransform(my, [-26, 26], [14, -14]), { stiffness: 800, damping: 60 });
+  const rotY = useSpring(useTransform(mx, [-26, 26], [-14, 14]), { stiffness: 800, damping: 60 });
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(e.clientX - r.left - r.width / 2);
+    my.set(e.clientY - r.top - r.height / 2);
+  };
+  const handleLeave = () => { mx.set(0); my.set(0); };
+  return (
+    <motion.div
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      whileHover={{ scale: 1.12 }}
+      whileTap={{ scaleX: 1.22, scaleY: 0.72, rotate: -10, transition: { type: 'spring', stiffness: 600, damping: 18 } }}
+      style={{
+        rotateX: rotX, rotateY: rotY,
+        transformPerspective: 500, transformStyle: 'preserve-3d' as const,
+        width: '42px', height: '42px', borderRadius: '11px', flexShrink: 0,
+        border: `1px solid ${isOpen ? color + '50' : 'var(--bd)'}`,
+        background: isOpen ? `${color}12` : 'var(--bg-card)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'border-color 0.35s, background 0.35s',
+        boxShadow: isOpen ? `0 0 20px ${color}20` : 'none',
+        cursor: 'pointer',
+      }}
+    >
+      <motion.div
+        whileHover={{ rotate: [0, -14, 12, -6, 4, 0], transition: { duration: 0.55, ease: 'easeInOut' } }}
+        whileTap={{ rotate: 20, scale: 0.85, transition: { type: 'spring', stiffness: 500, damping: 10 } }}
+        animate={isOpen ? { rotate: [0, -10, 8, -4, 2, 0], scale: [1, 1.15, 0.92, 1.05, 0.98, 1] } : { rotate: 0, scale: 1 }}
+        transition={{ duration: 0.55, ease: 'easeOut' }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
+
 // ─── Collapsible card ────────────────────────────────────────────────────────
 interface TimelineEntry {
   id: string;
@@ -138,18 +180,11 @@ function TimelineCard({ entry, index, isOpen, onToggle }: {
           display: 'flex', alignItems: 'center', gap: '16px', userSelect: 'none',
         }}>
           {/* Icon box */}
-          <div style={{
-            width: '42px', height: '42px', borderRadius: '11px', flexShrink: 0,
-            border: `1px solid ${isOpen ? entry.color + '50' : 'var(--bd)'}`,
-            background: isOpen ? `${entry.color}12` : 'var(--bg-card)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'all 0.4s',
-            boxShadow: isOpen ? `0 0 20px ${entry.color}20` : 'none',
-          }}>
+          <InteractiveIconBox color={entry.color} isOpen={isOpen}>
             {entry.entryType === 'education'
               ? <GradCapIcon color={entry.color} size={18} />
               : <BriefcaseIcon color={entry.color} size={18} />}
-          </div>
+          </InteractiveIconBox>
 
           {/* Text */}
           <div style={{ flex: 1, minWidth: 0 }}>

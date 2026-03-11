@@ -1,4 +1,44 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+
+// ─── Interactive icon box (3D tilt + squish) ──────────────────────────────────
+function InteractiveIconBox({ color, isHov, children }: { color: string; isHov: boolean; children: React.ReactNode }) {
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rotX = useSpring(useTransform(my, [-22, 22], [12, -12]), { stiffness: 800, damping: 60 });
+  const rotY = useSpring(useTransform(mx, [-22, 22], [-12, 12]), { stiffness: 800, damping: 60 });
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(e.clientX - r.left - r.width / 2);
+    my.set(e.clientY - r.top - r.height / 2);
+  };
+  const handleLeave = () => { mx.set(0); my.set(0); };
+  return (
+    <motion.div
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      whileHover={{ scale: 1.12 }}
+      whileTap={{ scaleX: 1.22, scaleY: 0.72, rotate: -10, transition: { type: 'spring', stiffness: 600, damping: 18 } }}
+      style={{
+        rotateX: rotX, rotateY: rotY,
+        transformPerspective: 500, transformStyle: 'preserve-3d' as const,
+        width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
+        border: `1px solid ${isHov ? color + '50' : 'var(--bd)'}`,
+        background: isHov ? `${color}15` : 'var(--bg-card)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'border-color 0.32s, background 0.32s',
+        boxShadow: isHov ? `0 0 22px ${color}28` : 'none',
+      }}
+    >
+      <motion.div
+        whileHover={{ rotate: [0, -14, 12, -6, 4, 0], transition: { duration: 0.55, ease: 'easeInOut' } }}
+        whileTap={{ rotate: 20, scale: 0.85, transition: { type: 'spring', stiffness: 500, damping: 10 } }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+}
 import portfolio from '../data/portfolio';
 
 const COLOR = '#00f5d4';
@@ -96,15 +136,9 @@ function ContactCard({ item, index, visible }: { item: ContactItem; index: numbe
         transition: 'all 0.3s',
       }} />
 
-      <div style={{
-        width: '44px', height: '44px', borderRadius: '12px', flexShrink: 0,
-        border: `1px solid ${hov ? item.color + '50' : 'var(--bd)'}`,
-        background: hov ? `${item.color}15` : 'var(--bg-card)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        transition: 'all 0.32s', boxShadow: hov ? `0 0 22px ${item.color}28` : 'none',
-      }}>
+      <InteractiveIconBox color={item.color} isHov={hov}>
         <item.Icon color={hov ? item.color : 'var(--tx-3)'} animate={iconAnim} />
-      </div>
+      </InteractiveIconBox>
 
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{
