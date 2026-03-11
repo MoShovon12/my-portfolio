@@ -139,8 +139,8 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
 function AvatarFace({ color, children }: { color: string; children: React.ReactNode }) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [18, -18]), { stiffness: 300, damping: 24 });
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-18, 18]), { stiffness: 300, damping: 24 });
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [18, -18]), { stiffness: 700, damping: 55 });
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-18, 18]), { stiffness: 700, damping: 55 });
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -188,8 +188,8 @@ function AvatarFace({ color, children }: { color: string; children: React.ReactN
 function IconBox({ color, lit, children }: { color: string; lit: boolean; children: React.ReactNode }) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
-  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [22, -22]), { stiffness: 400, damping: 20 });
-  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-22, 22]), { stiffness: 400, damping: 20 });
+  const rotX = useSpring(useTransform(my, [-0.5, 0.5], [22, -22]), { stiffness: 800, damping: 60 });
+  const rotY = useSpring(useTransform(mx, [-0.5, 0.5], [-22, 22]), { stiffness: 800, damping: 60 });
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -497,7 +497,7 @@ export default function About() {
           <div style={{
             display: 'flex', alignItems: 'center', gap: '14px',
             fontSize: '0.66rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: 'var(--tx-5)', fontFamily: 'monospace', marginBottom: '20px',
+            color: 'var(--tx-3)', fontFamily: 'monospace', marginBottom: '20px',
           }}>
             <span style={{ flex: 1, height: '1px', background: 'var(--bd)' }} />
             Click to explore expertise

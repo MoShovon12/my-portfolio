@@ -32,10 +32,10 @@ function App() {
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
       <main>
-        <Hero />
+        <Hero darkMode={darkMode} />
         <About />
         <Experience />
-        <Skills />
+        <Skills darkMode={darkMode} />
         <Certifications />
         <Contact />
       </main>
